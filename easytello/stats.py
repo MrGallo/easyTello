@@ -1,14 +1,19 @@
 from datetime import datetime
+from typing import List
 
 class Stats:
-    def __init__(self, command: str, id: int):
+    stats: List["Stat"] = []
+
+    def __init__(self, command: str):
         self.command = command
         self.response = None
-        self.id = id
+        self.id = len(Stats.stats)
 
         self.start_time = datetime.now()
         self.end_time = None
         self.duration = None
+
+        Stats.stats.append(self)
 
     def add_response(self, response: str):
         self.response = str(response)
