@@ -1,8 +1,9 @@
 from datetime import datetime
-from typing import List
+from typing import List, Union
+
 
 class Stats:
-    stats: List["Stat"] = []
+    stats: List["Stats"] = []
 
     def __init__(self, command: str):
         self.command = command
@@ -22,10 +23,7 @@ class Stats:
         self.duration = (self.end_time-self.start_time).total_seconds()
 
     def got_response(self):
-        if self.response is None:
-            return False
-        else:
-            return True
+        return self.response is not None
 
     def get_raw_response(self):
         return self.response
@@ -55,7 +53,11 @@ class Stats:
         temp = (self.int_response(raw_temp[0]) + self.int_response(raw_temp[1]))/2
         return temp
 
-    def get_response(self):
+    def sdk_response(self):
+        sdk = self.response
+        return sdk
+
+    def get_response(self) -> Union[str, int]:
         if 'attitude?' in self.command:
             return self.attitude_response()
         elif 'acceleration?' in self.command:
@@ -64,6 +66,8 @@ class Stats:
             return self.temp_response()
         elif 'baro?' in self.command or 'speed?' in self.command:
             return self.float_response(self.response)
+        elif 'sdk?' in self.command:
+            return self.sdk_response()
         elif '?' not in self.command:
             return self.get_raw_response()
         else:
