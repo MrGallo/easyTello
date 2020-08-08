@@ -88,7 +88,7 @@ class Tello:
     def get_log(self):
         return self.log
 
-    # Controll Commands
+    # Control Commands
     def command(self):
         self.send_command('command')
     
