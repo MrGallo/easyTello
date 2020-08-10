@@ -3,7 +3,7 @@ __author__ = 'Ezra Fielding'
 __liscence__ = 'MIT'
 __copyright__ = 'Copyright 2019 Ezra Fielding'
 __version__ = '0.0.7'
-__all__ = ['tello', 'stats']
+__all__ = ['tello', 'command_log', 'command']
 
-from .tello import Tello
-from .stats import Stats
+from .tello import Tello, BaseTello, CommandLoggerMixin, SocketManagerMixin
+from .command_log import CommandLog

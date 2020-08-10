@@ -1,68 +1,55 @@
-from typing import Optional, Tuple
-
-import pytest
-
-from easytello import Tello
+import easytello
 
 
-Address = Tuple[str, int]
+from .helpers import FakeSocketManagerMixin
 
 
-class FakeSocket:
-    def sendto(self, data: bytes, address: Address) -> int:
-        pass
-        # print(f"socket.sendto(): sending {data} to {address}")
-
-    def bind(self, address: Address):
-        self.bound_address = address
-
-    def recvfrom(self, bufsize: int) -> Tuple[bytes, Address]:
-        return (b'ok', self.bound_address)
+class FakeTello(easytello.CommandLoggerMixin, FakeSocketManagerMixin, easytello.BaseTello):
+    def send_command(self, command: str) -> str:
+        command_log = self.add_to_log(command)
+        self.send_through_socket(command)
+        response = self.await_socket_response()
+        self.update_log(command_log, response)
+        return command_log.get_response()
 
 
-class FakeTello(Tello):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.debug = False
-        self.socket = FakeSocket()
-        self.socket.bind((self.local_ip, self.local_port))
-
-    def _receive_thread(self):
-        while self._stop_thread is False:
-            # Checking for Tello response, throws socket error
-            try:
-                self.response, ip = self.socket.recvfrom(1024)
-                self.log[-1].add_response(self.response)
-            except IndexError as exc:
-                pass
+def test_includes_appropriate_mixins():
+    t = easytello.Tello()
+    assert isinstance(t, easytello.BaseTello)
+    assert isinstance(t, easytello.CommandLoggerMixin)
+    assert isinstance(t, easytello.SocketManagerMixin)
+    assert t.local_port == 8889
+    assert t.tello_ip == '192.168.10.1'
 
 
-Tello = FakeTello
+def test_can_override_tello_ip():
+    t = easytello.Tello(tello_ip='1.1.1.1')
+    assert t.tello_ip == "1.1.1.1"
 
 
-def test_create_tello_object():
-    my_tello = Tello()
-    assert my_tello.local_ip == ''
-    assert my_tello.local_port == 8889
+def test_send_command_creates_log():
+    t = FakeTello()
+    response = t.command()
+    assert response == "ok"
+    assert t.logs[-1].command == "command"
 
 
-def test_tello_start():
-    my_tello = Tello()
-    my_tello.start()
-    assert my_tello.log[-1].command == "command"
-    my_tello.stop()
+def test_command_gets_response():
+    t = FakeTello()
+    response = t.command()
+    assert response == "ok"
+    assert t.logs[-1].response == "ok"
 
 
-def test_context_manager():
-    with Tello() as my_tello:
-        assert my_tello.local_port == 8889
-        assert isinstance(my_tello.socket, FakeSocket)
-        assert my_tello.log[-1].command == "command"
-        assert my_tello._stop_thread is False
-
-    assert my_tello._stop_thread is True
+def test_command_gets_forced_error_response():
+    t = FakeTello()
+    FakeSocketManagerMixin.force_response('error')
+    t.command()
+    assert t.logs[-1].response == "error"
 
 
-# def test_sdk_version():
-#     with Tello(sdk=Tello.SDK) as my_tello:
-#         assert
+def test_get_battery():
+    t = FakeTello()
+    FakeSocketManagerMixin.force_response('87')
+    response = t.get_battery()
+    assert response == 87

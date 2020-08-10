@@ -1,14 +1,115 @@
-from inspect import FullArgSpec
 import socket
 import threading
 import time
-from typing import List, Optional, Union
+from typing import Any, Callable, List, Optional, Tuple, Union
 
 import cv2
-from easytello.stats import Stats
+import easytello.command as command
+from easytello.command_log import CommandLog
+
+Address = Tuple[str, int]
 
 
-class Tello:
+class BaseTello:
+    """
+    - command
+    - takeoff
+    - land
+    - send_command
+    - etc.
+    """
+    def send_command(self, command: str) -> Union[str, int]:
+        raise NotImplementedError
+
+    def command(self) -> str:
+        return self.send_command(command.COMMAND)
+
+    def takeoff(self) -> str:
+        return self.send_command(command.TAKEOFF)
+
+    def land(self) -> str:
+        return self.send_command(command.LAND)
+
+    def get_battery(self) -> int:
+        return self.send_command(command.GET_BATTERY)
+
+
+class CommandLoggerMixin:
+    """
+    - send_command (override/wrap)
+    - self.add_log_response(response: str)
+    - self.last_log_item
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.logs: List[CommandLog] = []
+
+    def add_to_log(self, command: str) -> CommandLog:
+        log = CommandLog(command)
+        self.logs.append(log)
+        return log
+
+    def update_log(self, command_log: CommandLog, response: str) -> None:
+        command_log.add_response(response)
+
+
+class SocketManagerMixin:
+    local_ip: str = ''
+    local_port: int = 8889
+    tello_port: int = 8889
+    tello_ip: Optional[str] = None
+    MAX_TIME_OUT = 15
+    _socket: Optional[socket.socket] = None
+    _receive_thread: Optional[threading.Thread] = None
+    _response: Optional[str] = None
+    _stop_thread = False
+
+    def send_through_socket(self, command: str) -> None:
+        if self.tello_ip is None:
+            self.tello_ip = '192.168.10.1'
+
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._socket.bind((self.local_ip, self.local_port))
+
+        self._receive_thread = threading.Thread(target=self._receive_thread_func)
+        self._receive_thread.daemon = True
+        self._receive_thread.start()
+
+        self.send_through_socket = self._send_through_socket
+        self.send_through_socket(command)
+
+    def _send_through_socket(self, command: str) -> None:
+        self._socket.sendto(command.encode('utf-8'), (self.tello_ip, self.tello_port))
+
+    def await_socket_response(self) -> str:
+        start = time.time()
+        while self._response is None:
+            now = time.time()
+            difference = now - start
+            if difference > self.MAX_TIME_OUT:
+                print('Connection timed out!')
+                break
+
+        response = self._response
+        self._response = None
+        return response
+
+    def _receive_thread_func(self):
+        while self._stop_thread is False:
+            # Checking for Tello response, throws socket error
+            try:
+                self._response, _ = self.socket.recvfrom(1024)
+            except socket.error as exc:
+                print('Socket error: {}'.format(exc))
+
+    def stop_thread(self):
+        self._stop_thread = True
+        print("waiting for thread to close...", end=" ")
+        self._receive_thread.join()
+        print("done")
+
+
+class TelloOld:
     class Direction:
         UP = "up"
         DOWN = "down"
@@ -27,7 +128,8 @@ class Tello:
         self.tello_ip = tello_ip
         self.tello_port = 8889
         self.tello_address = (self.tello_ip, self.tello_port)
-        self.log: List[Stats] = []
+        self.log: List[CommandLog] = []
+        self.receive_thread: Optional[threading.Thread] = None
 
         # easyTello runtime options
         self._stop_thread = False
@@ -43,21 +145,29 @@ class Tello:
         self.stop()
 
     def start(self):
-        # Open local UDP port on 8889 for Tello communication
+        """Initiate sequence to allow the Tello to send and recieve commands and data."""
         if self.socket is None:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.socket.bind((self.local_ip, self.local_port))
+            self._create_and_bind_socket()
 
-        # Intializing response thread
-        self.receive_thread = threading.Thread(target=self._receive_thread)
-        self.receive_thread.daemon = True
-        self.receive_thread.start()
+        self._initialize_response_thread()
 
         # Setting Tello to command mode
         response = self.command()
         self.debug_print(response)
 
-        # check sdk version
+        self._check_sdk_version()
+
+    def _create_and_bind_socket(self):
+        # Open local UDP port on 8889 for Tello communication
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.bind((self.local_ip, self.local_port))
+
+    def _initialize_response_thread(self):
+        self.receive_thread = threading.Thread(target=self._receive_thread)
+        self.receive_thread.daemon = True
+        self.receive_thread.start()
+
+    def _check_sdk_version(self):
         sdk_response = self.get_sdk()
         if "unknown command" in sdk_response:
             self._sdk_version = "1.3"
@@ -77,7 +187,7 @@ class Tello:
     # TODO: # query should not be a parameter to Tello.send_command.
     def send_command(self, command: str, query: bool = True) -> Union[str, int]:
         # New log entry created for the outbound command
-        self.log.append(Stats(command))
+        self.log.append(CommandLog(command))
 
         # Sending command to Tello
         self._send_command(command)
@@ -142,7 +252,7 @@ class Tello:
         if self.debug is True:
             print('Waiting {} seconds...'.format(delay))
         # Log entry for delay added
-        self.log.append(Stats('wait'))
+        self.log.append(CommandLog('wait'))
         # Delay is activated
         time.sleep(delay)
 
@@ -282,3 +392,35 @@ class Tello:
             return self.send_command('sdk?', True)
         else:
             return self._sdk_version
+
+
+class Tello(CommandLoggerMixin, SocketManagerMixin, BaseTello):
+    def __init__(self, tello_ip: str = '192.168.10.1', debug: bool = True):
+        self.tello_ip = tello_ip
+        self.debug = debug
+
+        if self.debug is True:
+            self.send_command = self._print_wrap_send_command(self.send_command)
+
+    def send_command(self, command: str) -> Union[str, int]:
+        command_log = self.add_to_log(command)
+        self.send_through_socket(command)
+
+        try:
+            response = self.await_socket_response()
+        except KeyboardInterrupt:
+            print("EMERGENCY STOP")
+            self.send_through_socket('emergency')
+            self.stop_thread()
+            exit()
+
+        self.update_log(command_log, response)
+
+        return command_log.get_response()
+
+    def _print_wrap_send_command(self, func) -> Callable:
+        def wrapper(self, *args, **kwargs) -> Union[str, int]:
+            print(f"Command: {command}...", end=" ")
+            result = func(*args, **kwargs)
+            print(result)
+        return wrapper
