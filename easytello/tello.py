@@ -4,7 +4,8 @@ import time
 from typing import Any, Callable, List, Optional, Tuple, Union
 
 import cv2
-import easytello.command as command
+import easytello.command
+import easytello.error
 from easytello.command_log import CommandLog
 
 Address = Tuple[str, int]
@@ -22,16 +23,141 @@ class BaseTello:
         raise NotImplementedError
 
     def command(self) -> str:
-        return self.send_command(command.COMMAND)
+        return self.send_command(easytello.command.COMMAND)
+
+    def emergency(self) -> None:
+        self.send_command(easytello.command.EMERGENCY)
 
     def takeoff(self) -> str:
-        return self.send_command(command.TAKEOFF)
+        return self.send_command(easytello.command.TAKEOFF)
 
     def land(self) -> str:
-        return self.send_command(command.LAND)
+        return self.send_command(easytello.command.LAND)
+
+    def wait(self, seconds: float):
+        # Displaying wait message (if 'debug' is True)
+        if self.debug is True:
+            print('Waiting {} seconds...'.format(seconds))
+        # Log entry for delay added
+        self.logs.append(CommandLog('wait'))
+        # Delay is activated
+        try:
+            time.sleep(seconds)
+        except KeyboardInterrupt:
+            print("\nEMERGENCY LAND")
+            self.land()
+
+    # Movement commands
+    def move(self, direction: str, dist: int) -> str:
+        # if dist < 20 or dist > 500:
+        #     raise ValueError(f"Distance for '{direction}' command must be between 20-500. Got {dist}.")
+        return self.send_command(easytello.command.MOVE.format(direction, dist))
+
+    def up(self, dist: int) -> str:
+        return self.move(easytello.command.UP, dist)
+
+    def down(self, dist: int) -> str:
+        return self.move(easytello.command.DOWN, dist)
+
+    def forward(self, dist: int) -> str:
+        return self.move(easytello.command.FORWARD, dist)
+
+    def back(self, dist: int) -> str:
+        return self.move(easytello.command.BACK, dist)
+
+    def left(self, dist: int) -> str:
+        return self.move(easytello.command.LEFT, dist)
+
+    def right(self, dist: int) -> str:
+        return self.move(easytello.command.RIGHT, dist)
+
+    def cw(self, degrees: int):
+        self.send_command('cw {}'.format(degrees))
+
+    def ccw(self, degrees: int):
+        self.send_command('ccw {}'.format(degrees))
+
+    def flip(self, direction: str):
+        self.send_command('flip {}'.format(direction))
+
+    def go(self, x: int, y: int, z: int, speed: int):
+        self.send_command('go {} {} {} {}'.format(x, y, z, speed))
+
+    def curve(self, x1: int, y1: int, z1: int, x2: int, y2: int, z2: int, speed: int):
+        self.send_command('curve {} {} {} {} {} {} {}'.format(x1, y1, z1, x2, y2, z2, speed))
+
+    # Video commands
+    def streamon(self) -> str:
+        return self.send_command("streamon")
+
+    def streamoff(self) -> str:
+        return self.send_command("streamoff")
+
+    # Set Commands
+    def set_speed(self, speed: int):
+        """Sets the speed of the aircraft.
+
+        Args:
+            speed: The value between 10-100.
+        """
+        self.send_command('speed {}'.format(speed))
+
+    def remote_control(self, roll: int = 0, pitch: int = 0,
+                       elevation: int = 0, yaw: int = 0):
+        """Set remote controller via four channels.
+
+        Args:
+            roll: left/right. -100 to 100.
+            pitch: forward/back. -100 to 100.
+            elevation: up/down. -100 to 100.
+            yaw: clockwise rotation/counterclockwise rotation. -100 to 100.
+        """
+        return self.send_command(
+            easytello.command.REMOTE_CONTROL.format(roll,
+                                                    pitch,
+                                                    elevation,
+                                                    yaw))
+
+    def set_wifi(self, ssid: str, passwrd: str):
+        self.send_command('wifi {} {}'.format(ssid, passwrd))
+
+    # Read Commands
+    def get_speed(self):
+        return self.send_command('speed?')
 
     def get_battery(self) -> int:
-        return self.send_command(command.GET_BATTERY)
+        return self.send_command(easytello.command.GET_BATTERY)
+
+    def get_time(self):
+        return self.send_command('time?')
+
+    def get_height(self):
+        return self.send_command('height?')
+
+    def get_temp(self):
+        return self.send_command('temp?')
+
+    def get_attitude(self):
+        return self.send_command('attitude?')
+
+    def get_baro(self):
+        return self.send_command('baro?')
+
+    def get_acceleration(self):
+        return self.send_command('acceleration?')
+
+    def get_tof(self):
+        return self.send_command('tof?')
+
+    def get_wifi(self):
+        return self.send_command('wifi?')
+
+    def get_sdk(self):
+        # if self._sdk_version is None:
+        #     return self.send_command('sdk?')
+        # else:
+        #     return self._sdk_version
+        return self.send_command('sdk?')
 
 
 class CommandLoggerMixin:
@@ -40,9 +166,7 @@ class CommandLoggerMixin:
     - self.add_log_response(response: str)
     - self.last_log_item
     """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.logs: List[CommandLog] = []
+    logs: List[CommandLog] = []
 
     def add_to_log(self, command: str) -> CommandLog:
         log = CommandLog(command)
@@ -61,10 +185,12 @@ class SocketManagerMixin:
     MAX_TIME_OUT = 15
     _socket: Optional[socket.socket] = None
     _receive_thread: Optional[threading.Thread] = None
+    _video_thread: Optional[threading.Thread] = None
     _response: Optional[str] = None
     _stop_thread = False
+    _stop_video_thread = False
 
-    def send_through_socket(self, command: str) -> None:
+    def initialize_socket_manager(self) -> None:
         if self.tello_ip is None:
             self.tello_ip = '192.168.10.1'
 
@@ -75,10 +201,7 @@ class SocketManagerMixin:
         self._receive_thread.daemon = True
         self._receive_thread.start()
 
-        self.send_through_socket = self._send_through_socket
-        self.send_through_socket(command)
-
-    def _send_through_socket(self, command: str) -> None:
+    def send_through_socket(self, command: str) -> None:
         self._socket.sendto(command.encode('utf-8'), (self.tello_ip, self.tello_port))
 
     def await_socket_response(self) -> str:
@@ -87,20 +210,43 @@ class SocketManagerMixin:
             now = time.time()
             difference = now - start
             if difference > self.MAX_TIME_OUT:
-                print('Connection timed out!')
-                break
+                return "timeout"
 
         response = self._response
         self._response = None
-        return response
+        return str(response, encoding='utf-8')
+
+    def start_video_thread(self):
+        self._video_thread = threading.Thread(target=self._video_thread_func)
+        self._video_thread.daemon = True
+        self._video_thread.start()
+
+    def stop_video_thread(self):
+        self._stop_video_thread = True
+        self._video_thread.join()
 
     def _receive_thread_func(self):
         while self._stop_thread is False:
             # Checking for Tello response, throws socket error
             try:
-                self._response, _ = self.socket.recvfrom(1024)
+                self._response, _ = self._socket.recvfrom(1024)
             except socket.error as exc:
                 print('Socket error: {}'.format(exc))
+
+    def _video_thread_func(self):
+        # Creating stream capture object
+        cap = cv2.VideoCapture('udp://'+self.tello_ip+':11111')
+        # Runs while 'stream_state' is True
+        while self._stop_video_thread is False:
+            ret, frame = cap.read()
+            cv2.imshow('DJI Tello', frame)
+
+            # Video Stream is closed if escape key is pressed
+            k = cv2.waitKey(1) & 0xFF
+            if k == 27:
+                break
+        cap.release()
+        cv2.destroyAllWindows()
 
     def stop_thread(self):
         self._stop_thread = True
@@ -254,7 +400,11 @@ class TelloOld:
         # Log entry for delay added
         self.log.append(CommandLog('wait'))
         # Delay is activated
-        time.sleep(delay)
+        try:
+            time.sleep(delay)
+        except KeyboardInterrupt:
+            print("\nEMERGENCY LANDING")
+            self.land()
 
     def get_log(self):
         return self.log
@@ -398,29 +548,57 @@ class Tello(CommandLoggerMixin, SocketManagerMixin, BaseTello):
     def __init__(self, tello_ip: str = '192.168.10.1', debug: bool = True):
         self.tello_ip = tello_ip
         self.debug = debug
-
-        if self.debug is True:
-            self.send_command = self._print_wrap_send_command(self.send_command)
+        self.initialize_socket_manager()
+        self.command()
 
     def send_command(self, command: str) -> Union[str, int]:
+        if self.debug is True:
+            print(f"Command: {command}...", end=" ", flush=True)
+
+        if command == "streamon":
+            self.start_video_thread()
+        elif command == "streamoff":
+            self.stop_video_thread()
+
         command_log = self.add_to_log(command)
         self.send_through_socket(command)
 
-        try:
-            response = self.await_socket_response()
-        except KeyboardInterrupt:
-            print("EMERGENCY STOP")
-            self.send_through_socket('emergency')
-            self.stop_thread()
-            exit()
+        non_response_commands = [
+            easytello.command.EMERGENCY,
+            easytello.command.REMOTE_CONTROL
+        ]
+
+        if command.split()[0] in tuple(c.split()[0] for c in non_response_commands):
+            response = "sent"
+        else:
+            try:
+                response = self.await_socket_response()
+            except KeyboardInterrupt:
+                if command == easytello.command.LAND:
+                    print("\nEMERGENCY STOP")
+                    self.send_through_socket('emergency')
+                else:
+                    print("\nEMERGENCY LANDING")
+                    self.land()
+                print("stopping thread")
+                self.stop_thread()
+                exit()
 
         self.update_log(command_log, response)
 
-        return command_log.get_response()
+        if self.debug is True:
+            print(command_log.response)
 
-    def _print_wrap_send_command(self, func) -> Callable:
-        def wrapper(self, *args, **kwargs) -> Union[str, int]:
-            print(f"Command: {command}...", end=" ")
-            result = func(*args, **kwargs)
-            print(result)
-        return wrapper
+        abortable_responses = (
+            easytello.error.TIMEOUT,
+            easytello.error.NOT_JOYSTICK,
+            easytello.error.NO_IMU,
+            easytello.error.OUT_OF_RANGE
+        )
+
+        if response in abortable_responses:
+            print(f"\nEMERGENCY LANDING ({response})")
+            self.land()
+            exit()
+
+        return command_log.response
