@@ -19,8 +19,17 @@ class BaseTello:
     - send_command
     - etc.
     """
+    NON_RESPONSE_COMMANDS = [
+        easytello.command.EMERGENCY,
+        easytello.command.REMOTE_CONTROL
+    ]
+
+    @classmethod
+    def is_non_response_command(cls, command: str) -> bool:
+        return command.split()[0] in tuple(c.split()[0] for c in cls.NON_RESPONSE_COMMANDS)
+
     def send_command(self, command: str) -> Union[str, int]:
-        raise NotImplementedError
+        raise NotImplementedError("Must override 'send_command' method when inheriting from BaseTello class.")
 
     def command(self) -> str:
         return self.send_command(easytello.command.COMMAND)
@@ -48,50 +57,92 @@ class BaseTello:
             self.land()
 
     # Movement commands
-    def move(self, direction: str, dist: int) -> str:
+    def move(self, direction: str, distance: int) -> str:
         # if dist < 20 or dist > 500:
         #     raise ValueError(f"Distance for '{direction}' command must be between 20-500. Got {dist}.")
-        return self.send_command(easytello.command.MOVE.format(direction, dist))
+        return self.send_command(easytello.command.MOVE.format(direction=direction, distance=distance))
 
-    def up(self, dist: int) -> str:
-        return self.move(easytello.command.UP, dist)
+    def move_up(self, distance: int) -> str:
+        return self.move(easytello.command.UP, distance)
 
-    def down(self, dist: int) -> str:
-        return self.move(easytello.command.DOWN, dist)
+    def move_down(self, distance: int) -> str:
+        return self.move(easytello.command.DOWN, distance)
 
-    def forward(self, dist: int) -> str:
-        return self.move(easytello.command.FORWARD, dist)
+    def move_forward(self, distance: int) -> str:
+        """Move Tello forward.
 
-    def back(self, dist: int) -> str:
-        return self.move(easytello.command.BACK, dist)
+        Arguments:
+            distance: The distance to move in centimeters.
+                      Must be between 20 cm and 500 cm.
 
-    def left(self, dist: int) -> str:
-        return self.move(easytello.command.LEFT, dist)
+        Returns:
+            Response string.
+        """
+        return self.move(easytello.command.FORWARD, distance)
 
-    def right(self, dist: int) -> str:
-        return self.move(easytello.command.RIGHT, dist)
+    def move_backward(self, distance: int) -> str:
+        return self.move(easytello.command.BACK, distance)
 
-    def cw(self, degrees: int):
+    def move_left(self, distance: int) -> str:
+        return self.move(easytello.command.LEFT, distance)
+
+    def move_right(self, distance: int) -> str:
+        return self.move(easytello.command.RIGHT, distance)
+
+    def rotate_right(self, degrees: int):
         self.send_command('cw {}'.format(degrees))
 
-    def ccw(self, degrees: int):
+    def rotate_left(self, degrees: int):
         self.send_command('ccw {}'.format(degrees))
 
     def flip(self, direction: str):
         self.send_command('flip {}'.format(direction))
 
-    def go(self, x: int, y: int, z: int, speed: int):
+    # TODO: Rename to move? or move_to_point?
+    # TODO: Consider translating so tello faces along y axis
+    def go(self, x: int, y: int, z: int, speed: int = 10):
+        """Move Tello to a point relative to the current position.
+
+        Relative to the direction Tello is facing.
+        Facing along the x axis.
+        """
         self.send_command('go {} {} {} {}'.format(x, y, z, speed))
 
-    def curve(self, x1: int, y1: int, z1: int, x2: int, y2: int, z2: int, speed: int):
+    # TODO: FIGURE OUT CURVE ??
+    """
+    (20, 50, 0), (0, 0, -50) - radius too large
+    (20, 100, 20), (-20, -100, 20) - arc length too long
+
+    (20, 50, 20), (-20, -50, 20) - to the cieling
+    """
+    def curve(self,
+              point1: Tuple[int, int, int],
+              point2: Tuple[int, int, int],
+              speed: int = 10):
+        """Fly the Tello in a curve from one point to the other.
+
+        The points are in 3D space. The Tello will fly in a
+        curve from (X^1, Y^1, Z^1) to (X^2, Y^2, Z^2).
+
+        Individual x, y, z components must be between 20 and 500.
+
+        Args:
+            point1: The first point. (x, y, z).
+            point2: The second point. (x, y, z).
+            speed: How fast to move. Between 10 cm/s to 60 cm/s. 
+        """
+        x1, y1, z1 = point1
+        x2, y2, z2 = point2
+
         self.send_command('curve {} {} {} {} {} {} {}'.format(x1, y1, z1, x2, y2, z2, speed))
 
     # Video commands
-    def streamon(self) -> str:
-        return self.send_command("streamon")
+    def video_on(self) -> str:
+        return self.send_command(easytello.command.STREAMON)
 
-    def streamoff(self) -> str:
-        return self.send_command("streamoff")
+    # TODO: Better name
+    def video_off(self) -> str:
+        return self.send_command(easytello.command.STREAMOFF)
 
     # Set Commands
     def set_speed(self, speed: int):
@@ -100,7 +151,7 @@ class BaseTello:
         Args:
             speed: The value between 10-100.
         """
-        self.send_command('speed {}'.format(speed))
+        self.send_command(easytello.command.SET_SPEED.format(speed=speed))
 
     def remote_control(self, roll: int = 0, pitch: int = 0,
                        elevation: int = 0, yaw: int = 0):
@@ -113,13 +164,13 @@ class BaseTello:
             yaw: clockwise rotation/counterclockwise rotation. -100 to 100.
         """
         return self.send_command(
-            easytello.command.REMOTE_CONTROL.format(roll,
-                                                    pitch,
-                                                    elevation,
-                                                    yaw))
+            easytello.command.REMOTE_CONTROL.format(roll=roll,
+                                                    pitch=pitch,
+                                                    elevation=elevation,
+                                                    yaw=yaw))
 
-    def set_wifi(self, ssid: str, passwrd: str):
-        self.send_command('wifi {} {}'.format(ssid, passwrd))
+    def set_wifi(self, ssid: str, password: str):
+        self.send_command(easytello.command.WIFI.format(ssid=ssid, password=password))
 
     # Read Commands
     def get_speed(self):
@@ -182,7 +233,7 @@ class SocketManagerMixin:
     local_port: int = 8889
     tello_port: int = 8889
     tello_ip: Optional[str] = None
-    MAX_TIME_OUT = 15
+    MAX_TIMEOUT = 15
     _socket: Optional[socket.socket] = None
     _receive_thread: Optional[threading.Thread] = None
     _video_thread: Optional[threading.Thread] = None
@@ -209,7 +260,7 @@ class SocketManagerMixin:
         while self._response is None:
             now = time.time()
             difference = now - start
-            if difference > self.MAX_TIME_OUT:
+            if difference > self.MAX_TIMEOUT:
                 return "timeout"
 
         response = self._response
@@ -545,6 +596,17 @@ class TelloOld:
 
 
 class Tello(CommandLoggerMixin, SocketManagerMixin, BaseTello):
+    ABORTABLE_RESPONSES = (
+        easytello.error.TIMEOUT,
+        easytello.error.NOT_JOYSTICK,
+        easytello.error.NO_IMU,
+        easytello.error.OUT_OF_RANGE,
+        easytello.error.CURVE_RADIUS_TOO_LARGE,
+        easytello.error.CURVE_COLINEAR,
+        easytello.error.ARC_LENGTH_TOO_LONG
+    )
+    MAX_TIMEOUT = 10
+
     def __init__(self, tello_ip: str = '192.168.10.1', debug: bool = True):
         self.tello_ip = tello_ip
         self.debug = debug
@@ -555,20 +617,10 @@ class Tello(CommandLoggerMixin, SocketManagerMixin, BaseTello):
         if self.debug is True:
             print(f"Command: {command}...", end=" ", flush=True)
 
-        if command == "streamon":
-            self.start_video_thread()
-        elif command == "streamoff":
-            self.stop_video_thread()
-
         command_log = self.add_to_log(command)
         self.send_through_socket(command)
 
-        non_response_commands = [
-            easytello.command.EMERGENCY,
-            easytello.command.REMOTE_CONTROL
-        ]
-
-        if command.split()[0] in tuple(c.split()[0] for c in non_response_commands):
+        if BaseTello.is_non_response_command(command):
             response = "sent"
         else:
             try:
@@ -576,7 +628,7 @@ class Tello(CommandLoggerMixin, SocketManagerMixin, BaseTello):
             except KeyboardInterrupt:
                 if command == easytello.command.LAND:
                     print("\nEMERGENCY STOP")
-                    self.send_through_socket('emergency')
+                    self.emergency()
                 else:
                     print("\nEMERGENCY LANDING")
                     self.land()
@@ -589,16 +641,18 @@ class Tello(CommandLoggerMixin, SocketManagerMixin, BaseTello):
         if self.debug is True:
             print(command_log.response)
 
-        abortable_responses = (
-            easytello.error.TIMEOUT,
-            easytello.error.NOT_JOYSTICK,
-            easytello.error.NO_IMU,
-            easytello.error.OUT_OF_RANGE
-        )
-
-        if response in abortable_responses:
+        if (response in Tello.ABORTABLE_RESPONSES
+                and command != easytello.command.LAND):
             print(f"\nEMERGENCY LANDING ({response})")
             self.land()
             exit()
 
         return command_log.response
+
+    def video_on(self) -> str:
+        self.start_video_thread()
+        return super().video_on()
+
+    def video_off(self) -> str:
+        self.stop_video_thread()
+        return super().video_off()
