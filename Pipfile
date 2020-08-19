@@ -8,6 +8,7 @@ easytello = {editable = true,path = "."}
 mypy = "*"
 pycodestyle = "*"
 pytest = "*"
+rope = "*"
 
 [packages]
 
