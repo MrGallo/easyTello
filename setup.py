@@ -14,7 +14,7 @@ setuptools.setup(
     url='https://github.com/Virodroid/easyTello',
     packages=setuptools.find_packages(),
     install_requires=[
-        'opencv-python'
+        # 'opencv-python'  pipenv error
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

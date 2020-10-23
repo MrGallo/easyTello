@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>easytello package &mdash; EasyTello-Gallo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> EasyTello-Gallo
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">easytello package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-easytello.command_log">easytello.command_log module</a></li>
+<li><a class="reference internal" href="#module-easytello.tello">easytello.tello module</a></li>
+<li><a class="reference internal" href="#module-easytello">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EasyTello-Gallo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>easytello package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/easytello.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="easytello-package">
+<h1>easytello package<a class="headerlink" href="#easytello-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="easytello.command.html">easytello.command package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="easytello.command.html#module-easytello.command">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="easytello.error.html">easytello.error package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="easytello.error.html#module-easytello.error">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-easytello.command_log">
+<span id="easytello-command-log-module"></span><h2>easytello.command_log module<a class="headerlink" href="#module-easytello.command_log" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="easytello.command_log.CommandLog">
+<em class="property">class </em><code class="sig-prename descclassname">easytello.command_log.</code><code class="sig-name descname">CommandLog</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.acceleration_response">
+<code class="sig-name descname">acceleration_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.acceleration_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.add_response">
+<code class="sig-name descname">add_response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">response</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.add_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.command_log.CommandLog.all_logs">
+<code class="sig-name descname">all_logs</code><em class="property">: List<span class="p">[</span><a class="reference internal" href="#easytello.command_log.CommandLog" title="easytello.command_log.CommandLog">easytello.command_log.CommandLog</a><span class="p">]</span></em><em class="property"> = []</em><a class="headerlink" href="#easytello.command_log.CommandLog.all_logs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.attitude_response">
+<code class="sig-name descname">attitude_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.attitude_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.float_response">
+<code class="sig-name descname">float_response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.float_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.get_raw_response">
+<code class="sig-name descname">get_raw_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.get_raw_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.get_response">
+<code class="sig-name descname">get_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#easytello.command_log.CommandLog.get_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.got_response">
+<code class="sig-name descname">got_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.got_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.int_response">
+<code class="sig-name descname">int_response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.int_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.numeric_response">
+<code class="sig-name descname">numeric_response</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.numeric_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.response">
+<em class="property">property </em><code class="sig-name descname">response</code><a class="headerlink" href="#easytello.command_log.CommandLog.response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.sdk_response">
+<code class="sig-name descname">sdk_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.sdk_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.command_log.CommandLog.temp_response">
+<code class="sig-name descname">temp_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.command_log.CommandLog.temp_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-easytello.tello">
+<span id="easytello-tello-module"></span><h2>easytello.tello module<a class="headerlink" href="#module-easytello.tello" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="easytello.tello.BaseTello">
+<em class="property">class </em><code class="sig-prename descclassname">easytello.tello.</code><code class="sig-name descname">BaseTello</code><a class="headerlink" href="#easytello.tello.BaseTello" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<ul class="simple">
+<li><p>command</p></li>
+<li><p>takeoff</p></li>
+<li><p>land</p></li>
+<li><p>send_command</p></li>
+<li><p>etc.</p></li>
+</ul>
+<dl class="py attribute">
+<dt id="easytello.tello.BaseTello.NON_RESPONSE_COMMANDS">
+<code class="sig-name descname">NON_RESPONSE_COMMANDS</code><em class="property"> = ['emergency', 'rc {roll} {pitch} {elevation} {yaw}']</em><a class="headerlink" href="#easytello.tello.BaseTello.NON_RESPONSE_COMMANDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.command">
+<code class="sig-name descname">command</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.curve">
+<code class="sig-name descname">curve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">point1</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">point2</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">speed</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fly the Tello in a curve from one point to the other.</p>
+<p>The points are in 3D space. The Tello will fly in a
+curve from (X^1, Y^1, Z^1) to (X^2, Y^2, Z^2).</p>
+<p>Individual x, y, z components must be between 20 and 500.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point1</strong> – The first point. (x, y, z).</p></li>
+<li><p><strong>point2</strong> – The second point. (x, y, z).</p></li>
+<li><p><strong>speed</strong> – How fast to move. Between 10 cm/s to 60 cm/s.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.emergency">
+<code class="sig-name descname">emergency</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#easytello.tello.BaseTello.emergency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.flip">
+<code class="sig-name descname">flip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">direction</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.flip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_acceleration">
+<code class="sig-name descname">get_acceleration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_acceleration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_attitude">
+<code class="sig-name descname">get_attitude</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_attitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_baro">
+<code class="sig-name descname">get_baro</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_baro" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_battery">
+<code class="sig-name descname">get_battery</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#easytello.tello.BaseTello.get_battery" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_height">
+<code class="sig-name descname">get_height</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_sdk">
+<code class="sig-name descname">get_sdk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_sdk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_speed">
+<code class="sig-name descname">get_speed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_speed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_temp">
+<code class="sig-name descname">get_temp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_temp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_time">
+<code class="sig-name descname">get_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_tof">
+<code class="sig-name descname">get_tof</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_tof" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.get_wifi">
+<code class="sig-name descname">get_wifi</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.get_wifi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.go">
+<code class="sig-name descname">go</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">z</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">speed</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.go" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move Tello to a point relative to the current position.</p>
+<p>Relative to the direction Tello is facing.
+Facing along the x axis.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.is_non_response_command">
+<em class="property">classmethod </em><code class="sig-name descname">is_non_response_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#easytello.tello.BaseTello.is_non_response_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.land">
+<code class="sig-name descname">land</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.land" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.move">
+<code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">direction</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.move" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.move_backward">
+<code class="sig-name descname">move_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.move_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.move_down">
+<code class="sig-name descname">move_down</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.move_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.move_forward">
+<code class="sig-name descname">move_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.move_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move Tello forward.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>distance</strong> – The distance to move in centimeters.
+Must be between 20 cm and 500 cm.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Response string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.move_left">
+<code class="sig-name descname">move_left</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.move_left" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.move_right">
+<code class="sig-name descname">move_right</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.move_right" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.move_up">
+<code class="sig-name descname">move_up</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.move_up" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.remote_control">
+<code class="sig-name descname">remote_control</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roll</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">pitch</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">elevation</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">yaw</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.remote_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set remote controller via four channels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roll</strong> – left/right. -100 to 100.</p></li>
+<li><p><strong>pitch</strong> – forward/back. -100 to 100.</p></li>
+<li><p><strong>elevation</strong> – up/down. -100 to 100.</p></li>
+<li><p><strong>yaw</strong> – clockwise rotation/counterclockwise rotation. -100 to 100.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.rotate_left">
+<code class="sig-name descname">rotate_left</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">degrees</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.rotate_left" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.rotate_right">
+<code class="sig-name descname">rotate_right</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">degrees</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.rotate_right" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.send_command">
+<code class="sig-name descname">send_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#easytello.tello.BaseTello.send_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.set_speed">
+<code class="sig-name descname">set_speed</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">speed</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.set_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the speed of the aircraft.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>speed</strong> – The value between 10-100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.set_wifi">
+<code class="sig-name descname">set_wifi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ssid</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">password</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.set_wifi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.takeoff">
+<code class="sig-name descname">takeoff</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.takeoff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.video_off">
+<code class="sig-name descname">video_off</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.video_off" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.video_on">
+<code class="sig-name descname">video_on</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.BaseTello.video_on" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.BaseTello.wait">
+<code class="sig-name descname">wait</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seconds</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.BaseTello.wait" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="easytello.tello.CommandLoggerMixin">
+<em class="property">class </em><code class="sig-prename descclassname">easytello.tello.</code><code class="sig-name descname">CommandLoggerMixin</code><a class="headerlink" href="#easytello.tello.CommandLoggerMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<ul class="simple">
+<li><p>send_command (override/wrap)</p></li>
+<li><p>self.add_log_response(response: str)</p></li>
+<li><p>self.last_log_item</p></li>
+</ul>
+<dl class="py method">
+<dt id="easytello.tello.CommandLoggerMixin.add_to_log">
+<code class="sig-name descname">add_to_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#easytello.command_log.CommandLog" title="easytello.command_log.CommandLog">easytello.command_log.CommandLog</a><a class="headerlink" href="#easytello.tello.CommandLoggerMixin.add_to_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.tello.CommandLoggerMixin.logs">
+<code class="sig-name descname">logs</code><em class="property">: List<span class="p">[</span><a class="reference internal" href="#easytello.command_log.CommandLog" title="easytello.command_log.CommandLog">easytello.command_log.CommandLog</a><span class="p">]</span></em><em class="property"> = []</em><a class="headerlink" href="#easytello.tello.CommandLoggerMixin.logs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.CommandLoggerMixin.update_log">
+<code class="sig-name descname">update_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command_log</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#easytello.command_log.CommandLog" title="easytello.command_log.CommandLog">easytello.command_log.CommandLog</a></span></em>, <em class="sig-param"><span class="n">response</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#easytello.tello.CommandLoggerMixin.update_log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="easytello.tello.SocketManagerMixin">
+<em class="property">class </em><code class="sig-prename descclassname">easytello.tello.</code><code class="sig-name descname">SocketManagerMixin</code><a class="headerlink" href="#easytello.tello.SocketManagerMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="easytello.tello.SocketManagerMixin.MAX_TIMEOUT">
+<code class="sig-name descname">MAX_TIMEOUT</code><em class="property"> = 15</em><a class="headerlink" href="#easytello.tello.SocketManagerMixin.MAX_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.SocketManagerMixin.await_socket_response">
+<code class="sig-name descname">await_socket_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.SocketManagerMixin.await_socket_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.SocketManagerMixin.initialize_socket_manager">
+<code class="sig-name descname">initialize_socket_manager</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#easytello.tello.SocketManagerMixin.initialize_socket_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.tello.SocketManagerMixin.local_ip">
+<code class="sig-name descname">local_ip</code><em class="property">: str</em><em class="property"> = ''</em><a class="headerlink" href="#easytello.tello.SocketManagerMixin.local_ip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.tello.SocketManagerMixin.local_port">
+<code class="sig-name descname">local_port</code><em class="property">: int</em><em class="property"> = 8889</em><a class="headerlink" href="#easytello.tello.SocketManagerMixin.local_port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.tello.SocketManagerMixin.local_video_port">
+<code class="sig-name descname">local_video_port</code><em class="property">: int</em><em class="property"> = 11111</em><a class="headerlink" href="#easytello.tello.SocketManagerMixin.local_video_port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.SocketManagerMixin.send_through_socket">
+<code class="sig-name descname">send_through_socket</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#easytello.tello.SocketManagerMixin.send_through_socket" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.SocketManagerMixin.start_video_thread">
+<code class="sig-name descname">start_video_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.SocketManagerMixin.start_video_thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.SocketManagerMixin.stop_thread">
+<code class="sig-name descname">stop_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.SocketManagerMixin.stop_thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.SocketManagerMixin.stop_video_thread">
+<code class="sig-name descname">stop_video_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.SocketManagerMixin.stop_video_thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.tello.SocketManagerMixin.tello_ip">
+<code class="sig-name descname">tello_ip</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><em class="property"> = None</em><a class="headerlink" href="#easytello.tello.SocketManagerMixin.tello_ip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.tello.SocketManagerMixin.tello_port">
+<code class="sig-name descname">tello_port</code><em class="property">: int</em><em class="property"> = 8889</em><a class="headerlink" href="#easytello.tello.SocketManagerMixin.tello_port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="easytello.tello.Tello">
+<em class="property">class </em><code class="sig-prename descclassname">easytello.tello.</code><code class="sig-name descname">Tello</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tello_ip</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'192.168.10.1'</span></em>, <em class="sig-param"><span class="n">debug</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#easytello.tello.Tello" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#easytello.tello.CommandLoggerMixin" title="easytello.tello.CommandLoggerMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">easytello.tello.CommandLoggerMixin</span></code></a>, <a class="reference internal" href="#easytello.tello.SocketManagerMixin" title="easytello.tello.SocketManagerMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">easytello.tello.SocketManagerMixin</span></code></a>, <a class="reference internal" href="#easytello.tello.BaseTello" title="easytello.tello.BaseTello"><code class="xref py py-class docutils literal notranslate"><span class="pre">easytello.tello.BaseTello</span></code></a></p>
+<dl class="py attribute">
+<dt id="easytello.tello.Tello.ABORTABLE_RESPONSES">
+<code class="sig-name descname">ABORTABLE_RESPONSES</code><em class="property"> = ('timeout', 'error Not joystick', 'error No valid imu', 'out of range', 'error Radius is too large!', 'error Three points are collinear!', &quot;error Arc's length is too long!&quot;)</em><a class="headerlink" href="#easytello.tello.Tello.ABORTABLE_RESPONSES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="easytello.tello.Tello.MAX_TIMEOUT">
+<code class="sig-name descname">MAX_TIMEOUT</code><em class="property"> = 10</em><a class="headerlink" href="#easytello.tello.Tello.MAX_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.Tello.send_command">
+<code class="sig-name descname">send_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">command</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>str<span class="p">, </span>int<span class="p">]</span><a class="headerlink" href="#easytello.tello.Tello.send_command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.Tello.video_off">
+<code class="sig-name descname">video_off</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.Tello.video_off" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="easytello.tello.Tello.video_on">
+<code class="sig-name descname">video_on</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#easytello.tello.Tello.video_on" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-easytello">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-easytello" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Mr. Gallo
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -9,6 +9,9 @@ mypy = "*"
 pycodestyle = "*"
 pytest = "*"
 rope = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+sphinxcontrib-napoleon = "*"
 
 [packages]
 

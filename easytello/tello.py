@@ -3,7 +3,7 @@ import threading
 import time
 from typing import Any, Callable, List, Optional, Tuple, Union
 
-import cv2
+# import cv2
 import easytello.command
 import easytello.error
 from easytello.command_log import CommandLog
