@@ -38,9 +38,11 @@ class BaseTello:
         self.send_command(easytello.command.EMERGENCY)
 
     def takeoff(self) -> str:
+        self.remote_control()
         return self.send_command(easytello.command.TAKEOFF)
 
     def land(self) -> str:
+        self.remote_control()
         return self.send_command(easytello.command.LAND)
 
     def wait(self, seconds: float):
@@ -364,11 +366,14 @@ class Tello(CommandLoggerMixin, SocketManagerMixin, BaseTello):
         if self.debug is True:
             print(command_log.response)
 
-        if (response in Tello.ABORTABLE_RESPONSES
-                and command != easytello.command.LAND):
-            print(f"\nEMERGENCY LANDING ({response})")
-            self.land()
-            exit()
+        if response in Tello.ABORTABLE_RESPONSES:
+            if command == easytello.command.LAND:
+                print("\nEMERGENCY STOP")
+                self.emergency()
+            else:
+                print(f"\nEMERGENCY LANDING ({response})")
+                self.land()
+                exit()
 
         return command_log.response
 
